@@ -1,0 +1,2858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Anjali's Story — Healthcare Data Field Guide</title>
+<meta name="description" content="Meet Anjali. Through her story, learn how healthcare data really works — the types, characteristics, and standards behind modern medicine." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --paper:        #F5F1EA;
+  --paper-soft:   #EFE9DE;
+  --paper-deep:   #E8E0D0;
+  --ink:          #14181F;
+  --ink-soft:     #2A2F38;
+  --ink-mute:     #5C6370;
+  --ink-faint:    #8B919C;
+  --rule:         #D8CFBE;
+  --rule-soft:    #E4DCC9;
+  --red:          #C73E1D;
+  --red-deep:     #9A2E14;
+  --red-soft:     #F4D9D1;
+  --green:        #2E5E4E;
+  --green-soft:   #CFE0D8;
+  --gold-soft:    #ECDDB9;
+  --skin:         #D4A584;
+  --hair:         #2D1810;
+
+  --serif:    'Fraunces', 'Times New Roman', serif;
+  --serif-ed: 'Instrument Serif', 'Fraunces', serif;
+  --sans:     'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:     'JetBrains Mono', 'Menlo', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: clamp(17px, 4.6vw, 19px);
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(199, 62, 29, 0.05) 0%, transparent 35%),
+    radial-gradient(circle at 88% 92%, rgba(46, 94, 78, 0.04) 0%, transparent 35%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+
+img, svg { display: block; max-width: 100%; }
+::selection { background: var(--ink); color: var(--paper); }
+
+/* ============================================================
+   PROGRESS + NAV
+   ============================================================ */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--red);
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(245, 241, 234, 0.78);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  font-family: var(--serif-ed);
+  font-size: 19px;
+  letter-spacing: -0.01em;
+}
+.nav.scrolled { border-bottom-color: var(--rule); }
+.nav .pulse-dot {
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: pulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+@media (min-width: 720px) {
+  .wrap { padding: 0 40px; }
+}
+
+section {
+  padding: 60px 0;
+  position: relative;
+}
+
+/* ============================================================
+   ANJALI — character portrait
+   ============================================================ */
+.anjali-portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.anjali-portrait .blink {
+  animation: blink 4s infinite;
+  transform-origin: center;
+}
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  94%, 96% { transform: scaleY(0.1); }
+}
+
+/* ============================================================
+   HERO — patient ID card
+   ============================================================ */
+.hero {
+  padding: 110px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+}
+.ecg-line {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+  animation: ecgDraw 4s 0.8s ease forwards;
+}
+@keyframes ecgDraw { to { stroke-dashoffset: 0; } }
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.1s ease forwards;
+}
+.eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--ink-mute);
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-weight: 350;
+  font-size: clamp(48px, 13vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  margin-bottom: 28px;
+  max-width: 13ch;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.25s ease forwards;
+}
+.hero h1 em {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  color: var(--red);
+  font-weight: 400;
+}
+
+.hero-sub {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 44ch;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.4s ease forwards;
+}
+
+/* Patient ID card */
+.id-card {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 18px;
+  padding: 26px 24px;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(20, 24, 31, 0.06), 0 12px 30px rgba(20, 24, 31, 0.08);
+  position: relative;
+  opacity: 0;
+  animation: fadeUp 1s 0.55s ease forwards;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.id-card:hover, .id-card:active {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(20, 24, 31, 0.08), 0 18px 36px rgba(199, 62, 29, 0.16);
+  border-color: var(--red);
+}
+.id-card::before {
+  content: 'PATIENT FILE · CONFIDENTIAL';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--red);
+  opacity: 0.75;
+}
+
+.id-row {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 6px;
+}
+.id-portrait {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  background: var(--paper-soft);
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+.id-info {
+  flex: 1;
+  min-width: 0;
+}
+.id-info .id-name {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.id-info .id-meta {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-mute);
+  letter-spacing: 0.05em;
+}
+
+.id-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--rule);
+}
+.id-field {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  align-items: baseline;
+  gap: 12px;
+}
+.id-field .id-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.id-field .id-value {
+  color: var(--ink);
+  font-weight: 500;
+  text-align: right;
+}
+
+.id-tap-cta {
+  margin-top: 18px;
+  padding: 14px 0 4px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+.id-tap-cta .arr {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+.id-card:hover .id-tap-cta .arr { transform: translateX(4px); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   ANJALI SAYS — speech callout (used across sections)
+   ============================================================ */
+.anjali-says {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+.anjali-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.bubble {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px 16px 16px 16px;
+  padding: 14px 18px;
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--ink);
+  position: relative;
+  max-width: 460px;
+}
+.bubble::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -8px;
+  width: 14px;
+  height: 14px;
+  background: var(--paper);
+  border-left: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0 0 0 4px;
+  transform: skew(-12deg);
+}
+
+/* Dark variant for dark sections */
+.story-stage .anjali-says .bubble,
+.quiz-sec .anjali-says .bubble {
+  background: rgba(245, 241, 234, 0.08);
+  border-color: rgba(245, 241, 234, 0.2);
+  color: var(--paper);
+}
+.story-stage .anjali-says .bubble::before,
+.quiz-sec .anjali-says .bubble::before {
+  background: rgba(245, 241, 234, 0.08);
+  border-color: rgba(245, 241, 234, 0.2);
+}
+.story-stage .anjali-avatar,
+.quiz-sec .anjali-avatar {
+  background: rgba(245, 241, 234, 0.05);
+  border-color: rgba(245, 241, 234, 0.2);
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.sec-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sec-label::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--ink-mute);
+}
+.sec-label .num {
+  color: var(--red);
+  font-weight: 600;
+}
+
+h2.sec-title {
+  font-family: var(--serif);
+  font-weight: 350;
+  font-size: clamp(28px, 6.5vw, 42px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  max-width: 20ch;
+}
+h2.sec-title em {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  color: var(--red);
+}
+
+/* ============================================================
+   STORY — click-through scenes
+   ============================================================ */
+.story-stage {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 70px 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+.story-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 28%, rgba(199, 62, 29, 0.18) 0%, transparent 42%),
+    radial-gradient(circle at 80% 75%, rgba(46, 94, 78, 0.12) 0%, transparent 42%);
+}
+.story-stage .wrap { position: relative; z-index: 2; width: 100%; }
+.story-stage .sec-label { color: rgba(245, 241, 234, 0.5); }
+.story-stage .sec-label::before { background: rgba(245, 241, 234, 0.3); }
+
+/* Scene container */
+.scene {
+  display: none;
+  animation: sceneIn 0.5s ease;
+}
+.scene.active { display: block; }
+
+@keyframes sceneIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.scene-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 234, 0.5);
+  margin-bottom: 26px;
+}
+
+.scene-body {
+  min-height: 280px;
+}
+.scene-quote {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: clamp(28px, 7vw, 40px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+  max-width: 18ch;
+}
+.scene-quote em {
+  color: #F4A48A;
+}
+.scene-attr {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 234, 0.5);
+  margin-bottom: 24px;
+}
+.scene-text {
+  font-size: 17px;
+  line-height: 1.65;
+  color: rgba(245, 241, 234, 0.88);
+  max-width: 38ch;
+  margin-bottom: 8px;
+}
+.scene-text strong { color: var(--paper); }
+
+/* Map visual */
+.scene-map {
+  margin: 24px 0;
+  max-width: 280px;
+  position: relative;
+}
+.scene-map svg { width: 100%; height: auto; }
+
+/* Empty chart visual */
+.empty-chart {
+  margin: 24px 0;
+  background: rgba(245, 241, 234, 0.04);
+  border: 1px dashed rgba(245, 241, 234, 0.25);
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 320px;
+}
+.empty-chart .chart-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(245, 241, 234, 0.12);
+  font-family: var(--mono);
+  font-size: 14px;
+  color: rgba(245, 241, 234, 0.45);
+}
+.empty-chart .chart-row:last-child { border: none; }
+.empty-chart .chart-row .empty-val { font-style: italic; color: rgba(245, 241, 234, 0.25); }
+
+.scene-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  background: var(--paper);
+  color: var(--ink);
+  border: none;
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: transform 0.2s ease;
+  min-height: 50px;
+}
+.scene-cta:hover, .scene-cta:active { transform: translateX(4px); }
+.scene-cta.ghost {
+  background: transparent;
+  border: 1px solid var(--paper);
+  color: var(--paper);
+}
+.scene-cta.ghost:hover { background: var(--paper); color: var(--ink); }
+
+.scene-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 36px;
+}
+.scene-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(245, 241, 234, 0.18);
+}
+.scene-dot.active {
+  background: #F4A48A;
+  width: 20px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+/* ============================================================
+   CAROUSELS
+   ============================================================ */
+.car-wrap {
+  margin: 0 -22px;
+  position: relative;
+}
+@media (min-width: 720px) {
+  .car-wrap { margin: 0 -40px; }
+}
+
+.carousel {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 6px 22px 24px;
+  scrollbar-width: none;
+}
+.carousel::-webkit-scrollbar { display: none; }
+@media (min-width: 720px) {
+  .carousel { padding: 6px 40px 24px; }
+}
+
+.car-card {
+  flex: 0 0 90%;
+  scroll-snap-align: center;
+  max-width: 400px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 1px 2px rgba(20, 24, 31, 0.04), 0 8px 24px rgba(20, 24, 31, 0.04);
+  transition: box-shadow 0.3s;
+}
+@media (min-width: 720px) {
+  .car-card { flex-basis: 400px; }
+}
+
+.car-tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.car-card h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.car-tagline {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+.car-desc {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+
+.car-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.car-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--rule);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  padding: 0;
+}
+.car-dot.active {
+  background: var(--red);
+  width: 26px;
+  border-radius: 5px;
+}
+
+.swipe-hint {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 16px;
+}
+.swipe-hint .arr-swipe {
+  display: inline-block;
+  animation: swipeArr 1.8s ease-in-out infinite;
+}
+@keyframes swipeArr {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+
+/* ============================================================
+   DATA TYPE — interactive samples
+   ============================================================ */
+.dt-pct {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  padding: 6px 12px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  color: var(--ink-soft);
+  display: inline-block;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.dt-sample {
+  background: var(--paper-soft);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 4px;
+  border: 1px solid var(--rule);
+}
+.dt-sample-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dt-sample-label .tip {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--red);
+  text-transform: none;
+  font-weight: 600;
+}
+
+/* structured: tappable cells */
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+.mini-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 8px 6px 0;
+  color: var(--ink-faint);
+  border-bottom: 1px solid var(--rule);
+}
+.mini-table td {
+  padding: 10px 8px 10px 0;
+  border-bottom: 1px dashed var(--rule-soft);
+  color: var(--ink);
+}
+.mini-table tr:last-child td { border: none; }
+.mini-table .tappable {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px 6px;
+  transition: all 0.2s;
+  background: var(--paper);
+  display: inline-block;
+  min-height: 32px;
+}
+.mini-table .tappable:hover, .mini-table .tappable:active {
+  background: var(--red);
+  color: var(--paper);
+}
+.flag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.flag-high { background: var(--red-soft); color: var(--red-deep); }
+.flag-ok   { background: var(--green-soft); color: var(--green); }
+
+.cell-tip {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--paper);
+  border-left: 3px solid var(--red);
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  border-radius: 0 6px 6px 0;
+  min-height: 50px;
+  font-family: var(--sans);
+}
+.cell-tip strong { color: var(--ink); }
+
+/* unstructured: tappable highlights */
+.mini-note {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  padding: 12px 14px;
+  border-left: 3px solid var(--red);
+  background: linear-gradient(to right, var(--gold-soft) 0%, transparent 70%);
+  border-radius: 0 6px 6px 0;
+}
+.mini-note mark {
+  background: var(--red-soft);
+  color: var(--red-deep);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-style: normal;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  font-family: var(--sans);
+  font-size: 14.5px;
+  display: inline-block;
+  margin: 1px 0;
+}
+.mini-note mark:hover, .mini-note mark.active {
+  background: var(--red);
+  color: var(--paper);
+}
+
+/* semi-structured: json with tappable keys */
+.mini-json {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  white-space: pre;
+  overflow-x: auto;
+}
+.mini-json .k {
+  color: var(--green);
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 1px 4px;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+.mini-json .k:hover, .mini-json .k.active {
+  background: var(--green);
+  color: var(--paper);
+}
+.mini-json .s { color: var(--red-deep); }
+.mini-json .n { color: #6B3A5C; font-weight: 600; }
+.mini-json .p { color: var(--ink-faint); }
+
+/* ============================================================
+   CHARACTERISTICS
+   ============================================================ */
+.chars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 720px) {
+  .chars { grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+
+.char-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 24px 22px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.char-card.open {
+  border-color: var(--ink);
+  box-shadow: 0 4px 12px rgba(20, 24, 31, 0.08);
+}
+
+.char-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  min-height: 50px;
+}
+.char-head-text { flex: 1; min-width: 0; }
+
+.char-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  flex-shrink: 0;
+  margin-bottom: 14px;
+}
+.char-icon svg { width: 22px; height: 22px; }
+
+.char-card h3 {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+.char-blurb {
+  font-size: 15.5px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  font-style: italic;
+  font-family: var(--serif-ed);
+}
+.char-toggle {
+  font-family: var(--sans);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--ink);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-soft);
+  border-radius: 50%;
+  margin-top: 2px;
+  line-height: 1;
+}
+.char-card.open .char-toggle { transform: rotate(45deg); }
+
+.char-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, margin-top 0.4s ease;
+}
+.char-card.open .char-body {
+  max-height: 800px;
+  margin-top: 18px;
+}
+
+/* Timeline */
+.tl-viz {
+  background: var(--paper-soft);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--rule);
+}
+.tl-svg {
+  width: 100%;
+  height: 110px;
+}
+.tl-ctrls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.tl-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: var(--rule);
+  border-radius: 3px;
+  outline: none;
+}
+.tl-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px; height: 28px;
+  background: var(--red);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 4px solid var(--paper);
+  box-shadow: 0 2px 6px rgba(199, 62, 29, 0.3);
+}
+.tl-slider::-moz-range-thumb {
+  width: 28px; height: 28px;
+  background: var(--red);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 4px solid var(--paper);
+}
+.tl-year {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+  min-width: 52px;
+  text-align: right;
+}
+.tl-event {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: var(--paper);
+  border-left: 3px solid var(--red);
+  font-size: 15px;
+  color: var(--ink-soft);
+  border-radius: 0 6px 6px 0;
+  min-height: 70px;
+  line-height: 1.55;
+}
+.tl-event strong { color: var(--ink); }
+
+/* Dimensions */
+.dim-viz {
+  background: var(--paper-soft);
+  border-radius: 12px;
+  padding: 20px 16px;
+  border: 1px solid var(--rule);
+  text-align: center;
+}
+.dim-count {
+  font-family: var(--serif);
+  font-size: 60px;
+  line-height: 1;
+  color: var(--red);
+  font-weight: 350;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+.dim-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 18px;
+}
+.dim-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.dim-toggle {
+  padding: 10px 16px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--ink-mute);
+  font-family: var(--sans);
+  font-weight: 500;
+  transition: all 0.2s;
+  min-height: 40px;
+}
+.dim-toggle.on {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* Heterogeneity */
+.het-viz {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.het-src {
+  text-align: center;
+  padding: 16px 8px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.25s;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.het-src:hover, .het-src.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+.het-src .src-icon {
+  font-size: 26px;
+  display: block;
+  margin-bottom: 6px;
+}
+.het-src .src-fmt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-top: 4px;
+}
+.het-src:hover .src-fmt, .het-src.active .src-fmt {
+  color: rgba(245, 241, 234, 0.6);
+}
+.het-detail {
+  grid-column: 1 / -1;
+  padding: 14px 16px;
+  background: var(--paper);
+  border-left: 3px solid var(--red);
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  border-radius: 0 8px 8px 0;
+  line-height: 1.55;
+  display: none;
+}
+.het-detail.show { display: block; animation: panelIn 0.3s ease; }
+.het-detail strong { color: var(--ink); }
+
+/* Vault */
+.vault-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vault-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-size: 15px;
+  user-select: none;
+  -webkit-user-select: none;
+  min-height: 60px;
+}
+.vault-item:active { transform: scale(0.99); }
+.vault-lock {
+  width: 26px; height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.vault-lock svg { width: 20px; height: 20px; }
+.vault-item.unlocked .vault-lock {
+  color: var(--green);
+  transform: rotate(20deg);
+}
+.vault-text { flex: 1; min-width: 0; }
+.vault-text strong { display: block; color: var(--ink); margin-bottom: 4px; font-size: 15.5px; }
+.vault-risk {
+  font-size: 13.5px;
+  color: var(--ink-faint);
+  font-style: italic;
+  line-height: 1.5;
+}
+.vault-item.unlocked .vault-risk { color: var(--ink-soft); font-style: normal; }
+
+/* ============================================================
+   STANDARDS — Anjali's chart with tappable codes
+   ============================================================ */
+.chart-board {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 18px;
+  padding: 26px 22px;
+  box-shadow: 0 2px 8px rgba(20, 24, 31, 0.06), 0 12px 30px rgba(20, 24, 31, 0.06);
+  margin-bottom: 32px;
+  position: relative;
+}
+.chart-board::before {
+  content: 'ANJALI · CHART NO. P-00471';
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--red);
+  opacity: 0.75;
+}
+.chart-board h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+.chart-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.chart-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--rule);
+  font-size: 15.5px;
+  min-height: 60px;
+}
+.chart-line:last-child { border: none; }
+.chart-line .chart-bullet {
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  margin-top: 10px;
+  flex-shrink: 0;
+}
+.chart-line .chart-content { flex: 1; }
+.chart-line .chart-content .chart-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.chart-line .chart-content .chart-text {
+  color: var(--ink);
+  line-height: 1.4;
+  font-size: 15.5px;
+}
+.chart-line .chart-code {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 8px 14px;
+  background: var(--paper-soft);
+  border: 1.5px solid var(--red);
+  border-radius: 100px;
+  color: var(--red);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  min-height: 40px;
+}
+.chart-code:hover, .chart-code.active {
+  background: var(--red);
+  color: var(--paper);
+  transform: scale(1.05);
+}
+
+.chart-decoded {
+  margin-top: 22px;
+  padding: 22px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 14px;
+  display: none;
+  animation: panelIn 0.3s ease;
+}
+.chart-decoded.show { display: block; }
+.chart-decoded .dec-head {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 234, 0.5);
+  margin-bottom: 10px;
+}
+.chart-decoded .dec-head .sys {
+  color: #F4A48A;
+  font-weight: 700;
+}
+.chart-decoded .dec-code {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: #F4A48A;
+  margin-bottom: 8px;
+}
+.chart-decoded .dec-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: var(--paper);
+  line-height: 1.2;
+}
+.chart-decoded .dec-explain {
+  font-size: 15.5px;
+  color: rgba(245, 241, 234, 0.86);
+  line-height: 1.6;
+}
+
+/* Standard reference list */
+.std-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.std-mini {
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 18px 20px;
+  transition: all 0.25s;
+}
+.std-mini-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.std-mini-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.std-mini-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 600;
+}
+.std-mini-q {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+.std-mini-desc {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+.quiz-sec {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 72px 0;
+}
+.quiz-sec .sec-label { color: rgba(245, 241, 234, 0.5); }
+.quiz-sec .sec-label::before { background: rgba(245, 241, 234, 0.3); }
+.quiz-sec h2.sec-title { color: var(--paper); }
+.quiz-sec h2.sec-title em { color: #F4A48A; }
+
+.quiz-wrap {
+  background: rgba(245, 241, 234, 0.04);
+  border: 1px solid rgba(245, 241, 234, 0.12);
+  border-radius: 20px;
+  padding: 28px 22px;
+  margin-top: 8px;
+}
+.quiz-progress {
+  height: 4px;
+  background: rgba(245, 241, 234, 0.1);
+  border-radius: 100px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.quiz-progress-fill {
+  height: 100%;
+  background: #F4A48A;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.quiz-qnum {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: rgba(245, 241, 234, 0.55);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.quiz-q {
+  font-family: var(--serif);
+  font-size: 23px;
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+.quiz-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.quiz-opt {
+  text-align: left;
+  padding: 18px 18px;
+  background: rgba(245, 241, 234, 0.05);
+  border: 1px solid rgba(245, 241, 234, 0.16);
+  border-radius: 12px;
+  font-size: 16px;
+  color: var(--paper);
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  line-height: 1.4;
+  min-height: 56px;
+}
+.quiz-opt:hover:not(:disabled), .quiz-opt:active:not(:disabled) {
+  background: rgba(245, 241, 234, 0.1);
+}
+.quiz-opt .opt-letter {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: rgba(245, 241, 234, 0.5);
+  flex-shrink: 0;
+  width: 18px;
+  font-weight: 600;
+}
+.quiz-opt.correct {
+  background: rgba(154, 203, 177, 0.16);
+  border-color: #9ACBB1;
+}
+.quiz-opt.correct .opt-letter { color: #9ACBB1; }
+.quiz-opt.incorrect {
+  background: rgba(244, 164, 138, 0.12);
+  border-color: #F4A48A;
+}
+.quiz-opt.incorrect .opt-letter { color: #F4A48A; }
+.quiz-opt:disabled { cursor: default; }
+
+.quiz-fb {
+  padding: 18px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  display: none;
+  border: 1px solid;
+}
+.quiz-fb.show { display: block; animation: panelIn 0.3s ease; }
+.quiz-fb.correct {
+  background: rgba(154, 203, 177, 0.1);
+  border-color: rgba(154, 203, 177, 0.4);
+  color: #C8E0D0;
+}
+.quiz-fb.incorrect {
+  background: rgba(244, 164, 138, 0.08);
+  border-color: rgba(244, 164, 138, 0.3);
+  color: #F4D6C8;
+}
+.quiz-fb strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: 19px;
+}
+
+.quiz-next {
+  padding: 16px 30px;
+  background: var(--paper);
+  color: var(--ink);
+  border: none;
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 50px;
+}
+.quiz-next.show { display: inline-flex; }
+
+.quiz-results {
+  text-align: center;
+  display: none;
+}
+.quiz-results.show { display: block; animation: panelIn 0.4s ease; }
+.quiz-score {
+  font-family: var(--serif);
+  font-size: 88px;
+  line-height: 1;
+  font-weight: 350;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.quiz-score span { color: #F4A48A; }
+.quiz-score-lbl {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 234, 0.55);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+.quiz-msg {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: 21px;
+  line-height: 1.4;
+  margin-bottom: 26px;
+  max-width: 24ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.quiz-restart {
+  padding: 14px 28px;
+  background: transparent;
+  border: 1px solid var(--paper);
+  color: var(--paper);
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-size: 15px;
+  cursor: pointer;
+  min-height: 46px;
+}
+.quiz-restart:hover { background: var(--paper); color: var(--ink); }
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 44px 0 36px;
+}
+footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.footer-brand {
+  font-family: var(--serif-ed);
+  font-style: italic;
+  font-size: 24px;
+  line-height: 1.25;
+  max-width: 24ch;
+}
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(245, 241, 234, 0.55);
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+/* reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   MOBILE OVERRIDES — kill carousels, use vertical stacks
+   ============================================================ */
+@media (max-width: 720px) {
+
+  /* Tighter side padding so cards have more room */
+  .wrap { padding: 0 18px; }
+
+  /* HERO — bigger headline that fills the screen */
+  .hero h1 {
+    font-size: clamp(58px, 18vw, 96px);
+    line-height: 0.95;
+    margin-bottom: 28px;
+    max-width: 11ch;
+  }
+
+  .hero-sub {
+    font-size: clamp(17px, 4.6vw, 19px);
+    margin-bottom: 36px;
+  }
+
+  /* Patient card stays centered with comfortable side padding */
+  .id-card {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Patient ID card text bigger */
+  .id-info .id-name { font-size: clamp(22px, 6.4vw, 28px); }
+  .id-info .id-meta { font-size: 14px; }
+  .id-field { font-size: 16px; }
+  .id-field .id-label { font-size: 12px; }
+  .id-tap-cta { font-size: 13px; padding-top: 16px; padding-bottom: 4px; min-height: 44px; }
+
+  /* Section titles bigger */
+  h2.sec-title {
+    font-size: clamp(28px, 7.5vw, 40px);
+  }
+
+  /* Bubble text scales */
+  .bubble { font-size: clamp(17px, 4.6vw, 20px); }
+  .anjali-avatar { width: 56px; height: 56px; }
+
+  /* Scene text bigger */
+  .scene-text { font-size: clamp(17px, 4.6vw, 19px); }
+  .scene-cta {
+    font-size: 17px;
+    padding: 18px 30px;
+    min-height: 56px;
+  }
+  .scene-dot { width: 8px; height: 8px; }
+  .scene-dot.active { width: 24px; }
+
+  /* === CAROUSELS BECOME STACKS === */
+  .car-wrap { margin: 0; }
+
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-x: visible;
+    overflow-y: visible;
+    scroll-snap-type: none;
+    padding: 6px 0 8px;
+  }
+
+  .car-card {
+    flex: 1 1 auto;
+    max-width: 100%;
+    width: 100%;
+    padding: 24px 20px;
+  }
+
+  /* Hide dots & swipe hint since we stack */
+  .car-dots, .swipe-hint { display: none; }
+
+  /* Card heads bigger */
+  .car-card h3 { font-size: clamp(28px, 7.4vw, 34px); }
+  .car-tag { font-size: 13px; }
+  .car-tagline { font-size: clamp(17px, 4.5vw, 20px); }
+  .car-desc { font-size: clamp(15.5px, 4.2vw, 17px); }
+  .dt-pct { font-size: 14px; padding: 8px 14px; }
+
+  /* Data samples bigger inside */
+  .dt-sample { padding: 18px 16px; }
+  .dt-sample-label { font-size: 12px; }
+  .dt-sample-label .tip { font-size: 12px; }
+
+  /* Mini-table bigger inside the now-full-width card */
+  .mini-table { font-size: 15px; }
+  .mini-table th { font-size: 12px; padding: 6px 6px 6px 0; }
+  .mini-table td { padding: 12px 6px 12px 0; }
+  .mini-table .tappable {
+    padding: 6px 8px;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .flag { font-size: 12px; padding: 3px 9px; }
+  .cell-tip { font-size: 15px; padding: 14px; min-height: 60px; }
+
+  /* Note text */
+  .mini-note { font-size: clamp(16px, 4.4vw, 18px); padding: 14px 16px; }
+  .mini-note mark { font-size: 14.5px; padding: 3px 8px; }
+
+  /* JSON sample */
+  .mini-json { font-size: 14px; line-height: 1.85; }
+
+  /* Characteristic cards */
+  .char-card { padding: 24px 20px; }
+  .char-card h3 { font-size: clamp(24px, 6.4vw, 28px); }
+  .char-blurb { font-size: 16px; }
+  .char-icon { width: 48px; height: 48px; }
+  .char-icon svg { width: 24px; height: 24px; }
+  .char-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  /* Timeline */
+  .tl-event { font-size: 15.5px; padding: 14px 16px; min-height: 80px; }
+  .tl-year { font-size: 17px; min-width: 56px; }
+  .tl-slider { height: 8px; }
+  .tl-slider::-webkit-slider-thumb { width: 32px; height: 32px; }
+  .tl-slider::-moz-range-thumb { width: 32px; height: 32px; }
+
+  /* Dimensions */
+  .dim-count { font-size: clamp(56px, 16vw, 72px); }
+  .dim-label { font-size: 12px; }
+  .dim-toggle { font-size: 15px; padding: 12px 18px; min-height: 48px; }
+
+  /* Heterogeneity */
+  .het-src { font-size: 14px; min-height: 100px; padding: 18px 8px; }
+  .het-src .src-icon { font-size: 30px; }
+  .het-src .src-fmt { font-size: 11px; }
+  .het-detail { font-size: 15.5px; padding: 16px; }
+
+  /* Vault */
+  .vault-item { padding: 18px; font-size: 16px; min-height: 70px; }
+  .vault-text strong { font-size: 17px; margin-bottom: 6px; }
+  .vault-risk { font-size: 14.5px; }
+  .vault-lock { width: 28px; height: 28px; }
+  .vault-lock svg { width: 22px; height: 22px; }
+
+  /* Chart board — Anjali's record */
+  .chart-board { padding: 24px 18px; }
+  .chart-board::before { font-size: 11px; }
+  .chart-board h3 { font-size: 26px; margin-top: 16px; }
+  .chart-sub { font-size: 12px; margin-bottom: 24px; }
+  .chart-line {
+    font-size: 17px;
+    padding: 16px 0;
+    gap: 12px;
+    min-height: 70px;
+  }
+  .chart-line .chart-content .chart-label { font-size: 12px; margin-bottom: 6px; }
+  .chart-line .chart-content .chart-text { font-size: 17px; }
+  .chart-code {
+    font-size: 15px;
+    padding: 10px 16px;
+    min-height: 44px;
+    border-width: 2px;
+  }
+
+  .chart-decoded { padding: 24px 20px; margin-top: 24px; }
+  .chart-decoded .dec-head { font-size: 12px; }
+  .chart-decoded .dec-code { font-size: 32px; }
+  .chart-decoded .dec-name { font-size: 24px; }
+  .chart-decoded .dec-explain { font-size: 17px; }
+
+  /* Standards list bigger */
+  .std-mini { padding: 20px; }
+  .std-mini-name { font-size: 24px; }
+  .std-mini-tag { font-size: 12px; }
+  .std-mini-q { font-size: 18px; }
+  .std-mini-desc { font-size: 16px; }
+
+  /* Quiz */
+  .quiz-wrap { padding: 28px 20px; }
+  .quiz-qnum { font-size: 13px; }
+  .quiz-q { font-size: clamp(22px, 5.8vw, 26px); }
+  .quiz-opt {
+    font-size: 17px;
+    padding: 20px 18px;
+    min-height: 64px;
+    border-width: 1.5px;
+  }
+  .quiz-opt .opt-letter { font-size: 14px; }
+  .quiz-fb { font-size: 16px; padding: 20px; }
+  .quiz-fb strong { font-size: 20px; }
+  .quiz-next { font-size: 17px; padding: 18px 32px; min-height: 56px; }
+  .quiz-score { font-size: clamp(80px, 22vw, 110px); }
+  .quiz-score-lbl { font-size: 13px; }
+  .quiz-msg { font-size: 22px; }
+  .quiz-restart { font-size: 16px; padding: 16px 32px; min-height: 50px; }
+
+  /* Footer bigger */
+  .footer-brand { font-size: 26px; }
+  .footer-meta { font-size: 13px; }
+
+  /* Section spacing */
+  section { padding: 56px 0; }
+  .story-stage { padding: 64px 0; min-height: auto; }
+
+  /* Nav text */
+  .nav { font-size: 20px; padding: 16px 18px; }
+
+  /* Eyebrow + section labels */
+  .eyebrow { font-size: 13px; }
+  .sec-label { font-size: 13px; }
+
+  /* Anjali-says spacing */
+  .anjali-says { gap: 12px; margin-bottom: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Reusable SVG defs for Anjali's portrait -->
+<svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <symbol id="anjali" viewBox="0 0 120 120">
+      <defs>
+        <linearGradient id="anjBg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#F4D9D1"/>
+          <stop offset="100%" stop-color="#ECDDB9"/>
+        </linearGradient>
+      </defs>
+      <circle cx="60" cy="60" r="58" fill="url(#anjBg)"/>
+      <!-- shoulder/saree -->
+      <path d="M10 120 Q 35 88, 60 88 Q 85 88, 110 120 Z" fill="#9A2E14"/>
+      <path d="M40 95 Q 60 90, 80 95 L 78 110 L 42 110 Z" fill="#C73E1D" opacity="0.6"/>
+      <!-- neck -->
+      <rect x="54" y="75" width="12" height="14" fill="#C8956D"/>
+      <!-- head -->
+      <ellipse cx="60" cy="58" rx="22" ry="26" fill="#D4A584"/>
+      <!-- hair -->
+      <path d="M38 60 Q 32 30, 60 25 Q 88 30, 82 60 Q 82 48, 70 44 Q 60 40, 48 44 Q 38 50, 38 60 Z" fill="#2D1810"/>
+      <!-- bun -->
+      <ellipse cx="60" cy="22" rx="13" ry="8" fill="#2D1810"/>
+      <!-- eyes -->
+      <g class="blink">
+        <ellipse cx="51" cy="60" rx="2" ry="2.5" fill="#14181F"/>
+        <ellipse cx="69" cy="60" rx="2" ry="2.5" fill="#14181F"/>
+      </g>
+      <!-- eyebrows -->
+      <path d="M46 53 Q 51 51, 56 53" stroke="#2D1810" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M64 53 Q 69 51, 74 53" stroke="#2D1810" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- nose -->
+      <path d="M58 67 Q 60 73, 62 67" stroke="#9A6F4E" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <!-- mouth -->
+      <path d="M54 78 Q 60 81, 66 78" stroke="#9A2E14" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <!-- bindi -->
+      <circle cx="60" cy="44" r="1.5" fill="#C73E1D"/>
+      <!-- earring -->
+      <circle cx="38" cy="62" r="2" fill="#B8893E"/>
+      <circle cx="82" cy="62" r="2" fill="#B8893E"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="progress" id="progress"></div>
+<nav class="nav" id="nav">
+  <span class="pulse-dot"></span>
+  Anjali's Story
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <svg viewBox="0 0 1400 700" preserveAspectRatio="none" style="width:100%;height:100%;position:absolute;">
+      <path class="ecg-line" d="M 0 350 L 200 350 L 240 350 L 260 340 L 280 360 L 300 350 L 380 350 L 400 280 L 420 420 L 440 200 L 460 480 L 480 350 L 580 350 L 600 340 L 620 360 L 640 350 L 760 350 L 780 280 L 800 420 L 820 200 L 840 480 L 860 350 L 960 350 L 980 340 L 1000 360 L 1020 350 L 1140 350 L 1160 280 L 1180 420 L 1200 200 L 1220 480 L 1240 350 L 1400 350" />
+    </svg>
+  </div>
+  <div class="wrap hero-content">
+    <div class="eyebrow">A 5-minute interactive guide</div>
+    <h1>Meet the person <em>behind</em> the data.</h1>
+    <p class="hero-sub">
+      Healthcare data is a vast, complex world. But every record is just one
+      person's story. Here's hers.
+    </p>
+
+    <!-- The Patient ID Card — the start button -->
+    <div class="id-card" id="startCard" role="button" tabindex="0">
+      <div class="id-row">
+        <div class="id-portrait">
+          <svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg>
+        </div>
+        <div class="id-info">
+          <div class="id-name">Anjali Sharma</div>
+          <div class="id-meta">P-00471 · F · 47y</div>
+        </div>
+      </div>
+      <div class="id-fields">
+        <div class="id-field">
+          <span class="id-label">From</span>
+          <span class="id-value">Bangalore, IN</span>
+        </div>
+        <div class="id-field">
+          <span class="id-label">Diagnosis</span>
+          <span class="id-value">Type 2 Diabetes</span>
+        </div>
+        <div class="id-field">
+          <span class="id-label">Records since</span>
+          <span class="id-value">2018 · 7 years</span>
+        </div>
+      </div>
+      <div class="id-tap-cta">
+        <span>Tap to begin her story</span>
+        <span class="arr">→</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY — click-through scenes -->
+<section class="story-stage" id="story">
+  <div class="wrap">
+    <div class="sec-label" style="justify-content:center;"><span class="num">00</span> · The Opening Scene</div>
+
+    <!-- Scene 1: Bangalore -->
+    <div class="scene active" data-scene="0">
+      <div class="scene-num">Scene 1 of 5</div>
+      <div class="scene-body">
+        <div class="anjali-says">
+          <div class="anjali-avatar"><svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg></div>
+          <div class="bubble">I'm Anjali. I've lived in Bangalore my whole life. For seven years, my doctors here have known every detail of my diabetes.</div>
+        </div>
+        <p class="scene-text">
+          Seven years of lab tests. Hundreds of doctor's visits. Every prescription, every reading, every note — <strong>all in her local hospital's system</strong>.
+        </p>
+      </div>
+      <button class="scene-cta" data-next="1">Continue <span>→</span></button>
+      <div class="scene-dots"><span class="scene-dot active"></span><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot"></span></div>
+    </div>
+
+    <!-- Scene 2: Flight to Delhi -->
+    <div class="scene" data-scene="1">
+      <div class="scene-num">Scene 2 of 5</div>
+      <div class="scene-body">
+        <div class="anjali-says">
+          <div class="anjali-avatar"><svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg></div>
+          <div class="bubble">Last month, I flew to Delhi for a second opinion from a specialist. I assumed they'd see my whole history.</div>
+        </div>
+        <div class="scene-map">
+          <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- India outline (simplified) -->
+            <path d="M 80 25 Q 110 20, 140 30 Q 160 35, 170 50 Q 175 70, 180 90 Q 185 110, 175 130 Q 165 150, 145 170 Q 125 180, 110 175 Q 95 170, 85 155 Q 75 140, 70 120 Q 65 100, 70 80 Q 75 50, 80 25 Z" fill="rgba(245,241,234,0.06)" stroke="rgba(245,241,234,0.2)" stroke-width="1"/>
+            <!-- Delhi -->
+            <circle cx="125" cy="50" r="5" fill="#F4A48A"/>
+            <text x="135" y="54" font-family="JetBrains Mono" font-size="10" fill="#F4A48A">DELHI</text>
+            <!-- Bangalore -->
+            <circle cx="110" cy="150" r="5" fill="#F4A48A"/>
+            <text x="120" y="154" font-family="JetBrains Mono" font-size="10" fill="#F4A48A">BANGALORE</text>
+            <!-- Path -->
+            <path id="flightPath" d="M 110 150 Q 80 100, 125 50" fill="none" stroke="#F4A48A" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.6"/>
+            <!-- Animated plane -->
+            <g>
+              <text font-size="18" fill="#F4A48A">
+                <animateMotion dur="3s" repeatCount="indefinite" rotate="auto">
+                  <mpath href="#flightPath"/>
+                </animateMotion>
+                ✈
+              </text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <button class="scene-cta" data-next="2">What happened next? <span>→</span></button>
+      <div class="scene-dots"><span class="scene-dot"></span><span class="scene-dot active"></span><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot"></span></div>
+    </div>
+
+    <!-- Scene 3: Empty chart -->
+    <div class="scene" data-scene="2">
+      <div class="scene-num">Scene 3 of 5</div>
+      <div class="scene-body">
+        <p class="scene-quote">"Did you bring your <em>reports</em>?"</p>
+        <p class="scene-attr">— The specialist, opening his EMR</p>
+        <p class="scene-text">
+          The specialist's screen showed almost nothing about Anjali. Seven years of care, and the field was blank.
+        </p>
+        <div class="empty-chart">
+          <div class="chart-row"><span>Name</span><span>Anjali Sharma</span></div>
+          <div class="chart-row"><span>Medical History</span><span class="empty-val">— empty —</span></div>
+          <div class="chart-row"><span>Labs</span><span class="empty-val">— not available —</span></div>
+          <div class="chart-row"><span>Medications</span><span class="empty-val">— not available —</span></div>
+          <div class="chart-row"><span>Recent visits</span><span class="empty-val">— not available —</span></div>
+        </div>
+      </div>
+      <button class="scene-cta" data-next="3">Why? <span>→</span></button>
+      <div class="scene-dots"><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot active"></span><span class="scene-dot"></span><span class="scene-dot"></span></div>
+    </div>
+
+    <!-- Scene 4: The reason -->
+    <div class="scene" data-scene="3">
+      <div class="scene-num">Scene 4 of 5</div>
+      <div class="scene-body">
+        <p class="scene-text" style="font-size:17px; margin-bottom: 14px;">
+          Anjali's data <strong>existed</strong>. It was in her Bangalore hospital's system. But that system couldn't talk to the Delhi one. Different formats. Different codes. Different rules.
+        </p>
+        <p class="scene-text" style="font-size:17px;">
+          So a nurse spent thirty minutes manually exporting PDFs while time — the only thing that matters in medicine — was lost.
+        </p>
+        <p class="scene-quote" style="margin-top:24px; font-size: clamp(22px, 5vw, 30px);">This isn't a <em>tech</em> failure.<br>It's a <em>language</em> failure.</p>
+      </div>
+      <button class="scene-cta" data-next="4">Show me <span>→</span></button>
+      <div class="scene-dots"><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot active"></span><span class="scene-dot"></span></div>
+    </div>
+
+    <!-- Scene 5: What we'll learn -->
+    <div class="scene" data-scene="4">
+      <div class="scene-num">Scene 5 of 5</div>
+      <div class="scene-body">
+        <div class="anjali-says">
+          <div class="anjali-avatar"><svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg></div>
+          <div class="bubble">To understand what went wrong, you have to understand my data — what shape it's in, what makes it special, and the codes that should let it travel with me.</div>
+        </div>
+        <p class="scene-text" style="font-size:16px;">
+          Three sections coming up. Each one explores a different piece of the puzzle through Anjali's actual record.
+        </p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top: 18px;">
+          <span style="font-family:var(--mono); font-size:11px; padding:6px 12px; background:rgba(245,241,234,0.1); border-radius:100px; color:rgba(245,241,234,0.85);">01 · Types</span>
+          <span style="font-family:var(--mono); font-size:11px; padding:6px 12px; background:rgba(245,241,234,0.1); border-radius:100px; color:rgba(245,241,234,0.85);">02 · Characteristics</span>
+          <span style="font-family:var(--mono); font-size:11px; padding:6px 12px; background:rgba(245,241,234,0.1); border-radius:100px; color:rgba(245,241,234,0.85);">03 · Standards</span>
+        </div>
+      </div>
+      <button class="scene-cta" id="storyToTypes">Explore Anjali's data <span>→</span></button>
+      <div class="scene-dots"><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot"></span><span class="scene-dot active"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPES -->
+<section id="types">
+  <div class="wrap">
+    <div class="sec-label reveal"><span class="num">01</span> · Anjali's Data, In 3 Forms</div>
+    <h2 class="sec-title reveal">Three flavors of data, <em>one</em> Anjali.</h2>
+
+    <div class="anjali-says reveal">
+      <div class="anjali-avatar"><svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg></div>
+      <div class="bubble">My record isn't one thing — it's three. Some neat. Some messy. Some in between. Tap to explore each.</div>
+    </div>
+  </div>
+
+  <div class="car-wrap reveal">
+    <div class="carousel" id="typesCarousel">
+
+      <!-- Structured -->
+      <div class="car-card">
+        <div class="car-tag">A · Structured</div>
+        <h3>Structured</h3>
+        <div class="car-tagline">The neat, gridded backbone.</div>
+        <span class="dt-pct">~20% of Anjali's data</span>
+        <p class="car-desc">
+          Rows. Columns. Fixed fields. Easy to search, easy to compute on. Her lab results live here.
+        </p>
+        <div class="dt-sample">
+          <div class="dt-sample-label">
+            <span>Anjali's labs · Mar 2024</span>
+            <span class="tip">Tap any cell ↓</span>
+          </div>
+          <table class="mini-table">
+            <thead><tr><th>Test</th><th>Value</th><th>Flag</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="tappable" data-tip="<strong>Test name.</strong> A predefined field — every lab result must have one. Stored as text.">Glucose</span></td>
+                <td><span class="tappable" data-tip="<strong>Numeric value.</strong> 148 mg/dL. A number type — sortable, comparable, computable.">148 mg/dL</span></td>
+                <td><span class="tappable" data-tip="<strong>Categorical flag.</strong> HIGH means above reference range. The system computed this automatically.">‎<span class="flag flag-high">HIGH</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="tappable" data-tip="<strong>Same field, different test.</strong> The schema repeats — that's the whole point of structure.">HbA1c</span></td>
+                <td><span class="tappable" data-tip="<strong>Anjali's 3-month average.</strong> 7.8% means her average glucose ran high. Numeric, computable.">7.8 %</span></td>
+                <td><span class="tappable" data-tip="<strong>Also auto-flagged.</strong> > 6.5% indicates diabetes. The system applied a rule.">‎<span class="flag flag-high">HIGH</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="tappable" data-tip="<strong>Different test.</strong> Same schema. That's interoperability — sort of.">Hemoglobin</span></td>
+                <td><span class="tappable" data-tip="<strong>13.4 g/dL.</strong> Within normal range — so no anemia complication.">13.4 g/dL</span></td>
+                <td><span class="tappable" data-tip="<strong>Normal.</strong> This time, no flag. The data is structured enough for the system to tell.">‎<span class="flag flag-ok">OK</span></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="cell-tip" id="tipA">Tap any cell to see what makes it "structured."</div>
+        </div>
+      </div>
+
+      <!-- Unstructured -->
+      <div class="car-card">
+        <div class="car-tag">B · Unstructured</div>
+        <h3>Unstructured</h3>
+        <div class="car-tagline">Where Anjali's real story lives.</div>
+        <span class="dt-pct">~70–80% of healthcare data</span>
+        <p class="car-desc">
+          No schema. Just human language. Most of healthcare's context — symptoms, lifestyle, social factors — hides here.
+        </p>
+        <div class="dt-sample">
+          <div class="dt-sample-label">
+            <span>Dr. Iyer's note · 18 Sep</span>
+            <span class="tip">Tap the highlights ↓</span>
+          </div>
+          <div class="mini-note" id="noteSample">
+            Pt is a <mark data-tip="<strong>Demographics.</strong> Age and sex — could be extracted into structured fields by NLP.">47yo woman</mark>
+            with <mark data-tip="<strong>Symptom.</strong> Free-text, no fixed code. NLP would need to map this to SNOMED.">fatigue & blurred vision</mark>
+            over 2 weeks. <mark data-tip="<strong>History.</strong> A known diagnosis. Maps to ICD code E11.9.">Hx of T2DM</mark>,
+            recently <mark data-tip="<strong>Behavioral data.</strong> A lifestyle change — hard to capture in tables, but clinically vital.">stopped exercising</mark>.
+            Plan: <mark data-tip="<strong>Care plan.</strong> Multiple LOINC-coded labs ordered, all from one free-text sentence.">labs, A1c, ophthalmology referral</mark>.
+          </div>
+          <div class="cell-tip" id="tipB">Tap a highlighted phrase to see what kind of data hides in plain language.</div>
+        </div>
+      </div>
+
+      <!-- Semi-structured -->
+      <div class="car-card">
+        <div class="car-tag">C · Semi-structured</div>
+        <h3>Semi-structured</h3>
+        <div class="car-tagline">The flexible bridge.</div>
+        <span class="dt-pct">From Anjali's wearable</span>
+        <p class="car-desc">
+          Has tags that explain themselves, but flexible. JSON and XML are everyday examples. Used by FHIR, APIs, wearables.
+        </p>
+        <div class="dt-sample">
+          <div class="dt-sample-label">
+            <span>Her smartwatch · 7am</span>
+            <span class="tip">Tap any key ↓</span>
+          </div>
+<div class="mini-json"><span class="p">{</span>
+  <span class="k" data-tip="<strong>Self-describing key.</strong> The tag explains what the value means — no separate schema needed.">"metric"</span><span class="p">:</span> <span class="s">"glucose"</span><span class="p">,</span>
+  <span class="k" data-tip="<strong>Nested structure.</strong> Reading has its own value, unit, timestamp — hierarchy, not flat.">"reading"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k" data-tip="<strong>The number.</strong> Same as in structured data — but here it's inside a labeled container.">"value"</span><span class="p">:</span> <span class="n">148</span><span class="p">,</span>
+    <span class="k" data-tip="<strong>Unit alongside value.</strong> Bundled together — no risk of mismatching them later.">"unit"</span><span class="p">:</span> <span class="s">"mg/dL"</span>
+  <span class="p">},</span>
+  <span class="k" data-tip="<strong>Source identifier.</strong> Tells the receiver which device or app sent this reading.">"source"</span><span class="p">:</span> <span class="s">"smartwatch"</span>
+<span class="p">}</span></div>
+          <div class="cell-tip" id="tipC">Tap a key to see what makes JSON "self-describing."</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="car-dots" id="typesDots"></div>
+    <div class="swipe-hint">Swipe between types <span class="arr-swipe">→</span></div>
+  </div>
+</section>
+
+<!-- CHARACTERISTICS -->
+<section id="characteristics" style="background: var(--paper-soft); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+  <div class="wrap">
+    <div class="sec-label reveal"><span class="num">02</span> · What Makes Anjali's Data Different</div>
+    <h2 class="sec-title reveal">It's not like other data. <em>At all.</em></h2>
+
+    <div class="anjali-says reveal">
+      <div class="anjali-avatar"><svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg></div>
+      <div class="bubble">Four things make my data different from, say, a banking record. Tap each card to see what it means for me.</div>
+    </div>
+
+    <div class="chars reveal">
+
+      <!-- Longitudinal -->
+      <div class="char-card">
+        <div class="char-head">
+          <div class="char-head-text">
+            <div class="char-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-8 4 16 3-8h5"/></svg>
+            </div>
+            <h3>Longitudinal</h3>
+            <p class="char-blurb">Seven years of me — drag through it.</p>
+          </div>
+          <div class="char-toggle">+</div>
+        </div>
+        <div class="char-body">
+          <div class="tl-viz">
+            <svg class="tl-svg" id="tlSvg" viewBox="0 0 400 110" preserveAspectRatio="none">
+              <line x1="20" y1="85" x2="380" y2="85" stroke="var(--rule)" stroke-width="1"/>
+              <g id="tlPoints"></g>
+              <line id="tlCursor" x1="20" y1="15" x2="20" y2="95" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="2 3"/>
+            </svg>
+            <div class="tl-ctrls">
+              <input type="range" min="0" max="4" value="0" class="tl-slider" id="tlSlider" />
+              <div class="tl-year" id="tlYear">2018</div>
+            </div>
+            <div class="tl-event" id="tlEvent">
+              <strong>2018 · Year 1.</strong> Routine check-up in Bangalore. Glucose 108. Flagged pre-diabetic. No meds.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- High dimensionality -->
+      <div class="char-card">
+        <div class="char-head">
+          <div class="char-head-text">
+            <div class="char-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            <h3>High dimensionality</h3>
+            <p class="char-blurb">Add layers — watch my "size" grow.</p>
+          </div>
+          <div class="char-toggle">+</div>
+        </div>
+        <div class="char-body">
+          <div class="dim-viz">
+            <div class="dim-count" id="dimCount">0</div>
+            <div class="dim-label">Variables in Anjali's record</div>
+            <div class="dim-toggles">
+              <button class="dim-toggle" data-val="6">Demographics</button>
+              <button class="dim-toggle" data-val="80">Labs</button>
+              <button class="dim-toggle" data-val="320">Imaging</button>
+              <button class="dim-toggle" data-val="1500">Clinical notes</button>
+              <button class="dim-toggle" data-val="20000">Genomics</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heterogeneous -->
+      <div class="char-card">
+        <div class="char-head">
+          <div class="char-head-text">
+            <div class="char-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><rect x="14" y="3" width="7" height="7"/><path d="M6 14l-3 7h6z"/><circle cx="17" cy="17" r="4"/></svg>
+            </div>
+            <h3>Heterogeneous</h3>
+            <p class="char-blurb">Six sources — each speaks differently.</p>
+          </div>
+          <div class="char-toggle">+</div>
+        </div>
+        <div class="char-body">
+          <div class="het-viz" id="hetGrid">
+            <div class="het-src" data-detail="<strong>Bangalore Hospital EMR.</strong> Stores Anjali's diagnoses, prescriptions, notes — usually in HL7 v2 format."><span class="src-icon">🏥</span>Hospital<div class="src-fmt">HL7</div></div>
+            <div class="het-src" data-detail="<strong>Lab system.</strong> Sends results coded as LOINC. Same Glucose test, same code, anywhere on Earth."><span class="src-icon">🧪</span>Lab<div class="src-fmt">LOINC</div></div>
+            <div class="het-src" data-detail="<strong>Pharmacy.</strong> Tracks dispensed medications. Uses Rx codes plus its own internal SKUs."><span class="src-icon">💊</span>Pharmacy<div class="src-fmt">Rx</div></div>
+            <div class="het-src" data-detail="<strong>Radiology.</strong> Stores DICOM images — huge files, separate viewers, special transfer protocols."><span class="src-icon">📷</span>Radiology<div class="src-fmt">DICOM</div></div>
+            <div class="het-src" data-detail="<strong>Anjali's smartwatch.</strong> Streams glucose readings as JSON. Modern, lightweight, but a totally different shape."><span class="src-icon">⌚</span>Wearable<div class="src-fmt">JSON</div></div>
+            <div class="het-src" data-detail="<strong>Insurance.</strong> Tracks claims and payments. Cares about CPT and ICD codes for billing — not clinical context."><span class="src-icon">📋</span>Insurance<div class="src-fmt">Claims</div></div>
+            <div class="het-detail" id="hetDetail">Tap any source above to see what it sends and how.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sensitive -->
+      <div class="char-card">
+        <div class="char-head">
+          <div class="char-head-text">
+            <div class="char-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            </div>
+            <h3>Sensitive &amp; regulated</h3>
+            <p class="char-blurb">Tap each lock — what's at stake?</p>
+          </div>
+          <div class="char-toggle">+</div>
+        </div>
+        <div class="char-body">
+          <div class="vault-list">
+            <div class="vault-item" data-risk="Combined with Anjali's medical records, her identity sells for ~10× the price of a credit card on dark markets.">
+              <div class="vault-lock"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+              <div class="vault-text"><strong>Personal identifiers</strong><div class="vault-risk">Tap to reveal risk</div></div>
+            </div>
+            <div class="vault-item" data-risk="Anjali's diabetes diagnosis affects her insurance, employment, even how relatives are assessed. Genetic data implicates her whole family.">
+              <div class="vault-lock"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+              <div class="vault-text"><strong>Clinical &amp; genetic</strong><div class="vault-risk">Tap to reveal risk</div></div>
+            </div>
+            <div class="vault-item" data-risk="If Anjali ever sees a therapist, those notes carry stigma. Mental-health records are routinely targeted in extortion schemes.">
+              <div class="vault-lock"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+              <div class="vault-text"><strong>Behavioral &amp; mental</strong><div class="vault-risk">Tap to reveal risk</div></div>
+            </div>
+            <div class="vault-item" data-risk="With her insurance ID, fraudsters can bill thousands under Anjali's identity — often undetected for months.">
+              <div class="vault-lock"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+              <div class="vault-text"><strong>Financial &amp; insurance</strong><div class="vault-risk">Tap to reveal risk</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STANDARDS -->
+<section id="standards">
+  <div class="wrap">
+    <div class="sec-label reveal"><span class="num">03</span> · The Codes That Describe Anjali</div>
+    <h2 class="sec-title reveal">Standards are the <em>grammar</em>.</h2>
+
+    <div class="anjali-says reveal">
+      <div class="anjali-avatar"><svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg></div>
+      <div class="bubble">My chart is full of tiny codes — each one means something specific, the same way everywhere on Earth. Tap any code to decode it.</div>
+    </div>
+
+    <!-- Anjali's chart with tappable codes -->
+    <div class="chart-board reveal">
+      <h3>Anjali's chart</h3>
+      <div class="chart-sub">Active diagnoses, recent labs, last visit</div>
+
+      <div class="chart-line">
+        <div class="chart-bullet"></div>
+        <div class="chart-content">
+          <div class="chart-label">Diagnosis</div>
+          <div class="chart-text">Type 2 diabetes mellitus, no complications</div>
+        </div>
+        <button class="chart-code" data-code="E11.9">E11.9</button>
+      </div>
+
+      <div class="chart-line">
+        <div class="chart-bullet"></div>
+        <div class="chart-content">
+          <div class="chart-label">Diagnosis</div>
+          <div class="chart-text">Essential hypertension</div>
+        </div>
+        <button class="chart-code" data-code="I10">I10</button>
+      </div>
+
+      <div class="chart-line">
+        <div class="chart-bullet"></div>
+        <div class="chart-content">
+          <div class="chart-label">Last visit · 18 Sep</div>
+          <div class="chart-text">Office visit, established patient, 22 min</div>
+        </div>
+        <button class="chart-code" data-code="99213">99213</button>
+      </div>
+
+      <div class="chart-line">
+        <div class="chart-bullet"></div>
+        <div class="chart-content">
+          <div class="chart-label">Lab · 18 Sep</div>
+          <div class="chart-text">Hemoglobin A1c — result 7.8%</div>
+        </div>
+        <button class="chart-code" data-code="4548-4">4548-4</button>
+      </div>
+
+      <div class="chart-line">
+        <div class="chart-bullet"></div>
+        <div class="chart-content">
+          <div class="chart-label">Lab · 18 Sep</div>
+          <div class="chart-text">Glucose, serum — result 148 mg/dL</div>
+        </div>
+        <button class="chart-code" data-code="2345-7">2345-7</button>
+      </div>
+
+      <div class="chart-line">
+        <div class="chart-bullet"></div>
+        <div class="chart-content">
+          <div class="chart-label">Clinical note</div>
+          <div class="chart-text">Patient reports fatigue — finding</div>
+        </div>
+        <button class="chart-code" data-code="84229001">84229001</button>
+      </div>
+
+      <div class="chart-decoded" id="chartDecoded">
+        <div class="dec-head">Recognized · <span class="sys" id="decSys">ICD</span></div>
+        <div class="dec-code" id="decCode">E11.9</div>
+        <div class="dec-name" id="decName">Type 2 diabetes mellitus</div>
+        <div class="dec-explain" id="decExplain">A diagnosis code from ICD-10. E = endocrine/metabolic diseases. 11.9 = T2DM with no complications specified. Used worldwide for billing, reporting, and research.</div>
+      </div>
+    </div>
+
+    <!-- The 5 standards summary -->
+    <h3 style="font-family: var(--serif); font-weight:400; font-size: 22px; margin-bottom: 14px; letter-spacing: -0.015em;" class="reveal">The five standards in her chart</h3>
+
+    <div class="std-list reveal">
+      <div class="std-mini">
+        <div class="std-mini-head"><span class="std-mini-name">ICD</span><span class="std-mini-tag">Diagnoses</span></div>
+        <div class="std-mini-q">"What's wrong with the patient?"</div>
+        <div class="std-mini-desc">A global code for every known disease. Anjali's diabetes = E11.9. Used everywhere — insurance, billing, research.</div>
+      </div>
+      <div class="std-mini">
+        <div class="std-mini-head"><span class="std-mini-name">CPT</span><span class="std-mini-tag">Procedures</span></div>
+        <div class="std-mini-q">"What was done about it?"</div>
+        <div class="std-mini-desc">5-digit codes for procedures. Anjali's office visit = 99213. ICD says what's wrong; CPT says what we did.</div>
+      </div>
+      <div class="std-mini">
+        <div class="std-mini-head"><span class="std-mini-name">LOINC</span><span class="std-mini-tag">Lab tests</span></div>
+        <div class="std-mini-q">"What was measured?"</div>
+        <div class="std-mini-desc">Universal codes for tests and observations. Anjali's HbA1c = 4548-4. Makes her result portable across any hospital.</div>
+      </div>
+      <div class="std-mini">
+        <div class="std-mini-head"><span class="std-mini-name">SNOMED CT</span><span class="std-mini-tag">Clinical terms</span></div>
+        <div class="std-mini-q">"What does the clinician mean?"</div>
+        <div class="std-mini-desc">350,000+ concepts linked logically. "Fatigue," "MI," "anemia" — all have unique IDs. Makes free text computable.</div>
+      </div>
+      <div class="std-mini">
+        <div class="std-mini-head"><span class="std-mini-name">HL7 &amp; FHIR</span><span class="std-mini-tag">Data exchange</span></div>
+        <div class="std-mini-q">"How do we move the data?"</div>
+        <div class="std-mini-desc">Other standards say what data <em>means</em>. HL7 and FHIR say how to <em>move</em> it. FHIR is the modern version — used by Apple Health and major EHRs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="quiz-sec" id="quiz">
+  <div class="wrap">
+    <div class="sec-label reveal"><span class="num">04</span> · What Did You Learn About Anjali?</div>
+    <h2 class="sec-title reveal"><em>Test</em> what you know.</h2>
+
+    <div class="anjali-says reveal">
+      <div class="anjali-avatar"><svg class="anjali-portrait" viewBox="0 0 120 120"><use href="#anjali"/></svg></div>
+      <div class="bubble">Five questions about what you saw. Take your time — honest feedback after each.</div>
+    </div>
+
+    <div class="quiz-wrap reveal">
+      <div class="quiz-progress"><div class="quiz-progress-fill" id="qProgress"></div></div>
+      <div id="qActive">
+        <div class="quiz-qnum" id="qNum">Question 1 of 5</div>
+        <div class="quiz-q" id="qQ"></div>
+        <div class="quiz-opts" id="qOpts"></div>
+        <div class="quiz-fb" id="qFb"></div>
+        <button class="quiz-next" id="qNext">Next <span>→</span></button>
+      </div>
+      <div class="quiz-results" id="qResults">
+        <div class="quiz-score"><span id="qScoreNum">0</span><span style="color:rgba(245,241,234,0.4);">/5</span></div>
+        <div class="quiz-score-lbl">Your score</div>
+        <div class="quiz-msg" id="qMsg"></div>
+        <button class="quiz-restart" id="qRestart">Try again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Built with care.<br>Every datapoint is a person.</div>
+    <div class="footer-meta">
+      EG · Anjali's Story<br>
+      A field guide
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   PROGRESS + NAV
+   ============================================================ */
+const nav = document.getElementById('nav');
+const prog = document.getElementById('progress');
+function onScroll() {
+  const sc = window.scrollY;
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = `${Math.min(100, (sc / max) * 100)}%`;
+  nav.classList.toggle('scrolled', sc > 20);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ============================================================
+   START CARD — smooth scroll to story (no link, no nav)
+   ============================================================ */
+function smoothScrollTo(el) {
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 0;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+const startCard = document.getElementById('startCard');
+if (startCard) {
+  startCard.addEventListener('click', () => smoothScrollTo(document.getElementById('story')));
+  startCard.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      smoothScrollTo(document.getElementById('story'));
+    }
+  });
+}
+
+/* ============================================================
+   STORY — scene click-through
+   ============================================================ */
+const scenes = document.querySelectorAll('.scene');
+document.querySelectorAll('[data-next]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const next = +btn.dataset.next;
+    scenes.forEach(s => s.classList.toggle('active', +s.dataset.scene === next));
+    smoothScrollTo(document.getElementById('story'));
+  });
+});
+const storyToTypes = document.getElementById('storyToTypes');
+if (storyToTypes) {
+  storyToTypes.addEventListener('click', () => smoothScrollTo(document.getElementById('types')));
+}
+
+/* ============================================================
+   CAROUSELS — sync dots with scroll
+   ============================================================ */
+function setupCarousel(carouselId, dotsId) {
+  const car = document.getElementById(carouselId);
+  const dots = document.getElementById(dotsId);
+  if (!car || !dots) return;
+  const cards = car.querySelectorAll('.car-card');
+
+  cards.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'car-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => {
+      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+    dots.appendChild(d);
+  });
+
+  const dotEls = dots.querySelectorAll('.car-dot');
+  let scrollTimer;
+  car.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const center = car.scrollLeft + car.clientWidth / 2;
+      let closest = 0;
+      let closestDist = Infinity;
+      cards.forEach((c, i) => {
+        const cardCenter = c.offsetLeft + c.clientWidth / 2;
+        const dist = Math.abs(cardCenter - center);
+        if (dist < closestDist) { closestDist = dist; closest = i; }
+      });
+      dotEls.forEach((d, i) => d.classList.toggle('active', i === closest));
+    }, 80);
+  }, { passive: true });
+}
+setupCarousel('typesCarousel', 'typesDots');
+
+/* ============================================================
+   TYPES — tappable details
+   ============================================================ */
+function setupTappable(selector, tipId) {
+  const tip = document.getElementById(tipId);
+  if (!tip) return;
+  document.querySelectorAll(selector).forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const data = el.dataset.tip;
+      if (!data) return;
+      tip.innerHTML = data;
+      // active state
+      document.querySelectorAll(selector).forEach(o => o.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+}
+setupTappable('.mini-table .tappable', 'tipA');
+setupTappable('.mini-note mark', 'tipB');
+setupTappable('.mini-json .k', 'tipC');
+
+/* ============================================================
+   CHARACTERISTICS — tap to expand
+   ============================================================ */
+document.querySelectorAll('.char-card').forEach(card => {
+  const head = card.querySelector('.char-head');
+  head.addEventListener('click', () => card.classList.toggle('open'));
+});
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+const tlData = [
+  { year: 2018, desc: '<strong>2018 · Year 1.</strong> Routine check-up in Bangalore. Glucose 108. Flagged pre-diabetic. No meds.', val: 5.9 },
+  { year: 2020, desc: '<strong>2020 · Year 3.</strong> Diagnosed T2DM. ICD <em>E11.9</em> added. Metformin started.', val: 7.2 },
+  { year: 2021, desc: '<strong>2021 · Year 4.</strong> Pandemic. Skipped follow-ups. HbA1c climbed to 8.1%.', val: 8.1 },
+  { year: 2023, desc: '<strong>2023 · Year 6.</strong> Wearable & CGM data flowing in. HbA1c down to 6.9%.', val: 6.9 },
+  { year: 2024, desc: '<strong>2024 · Year 7.</strong> Flies to Delhi. Seven years of records — but only some travel with her.', val: 6.6 }
+];
+
+const tlSvg = document.getElementById('tlSvg');
+const tlPoints = document.getElementById('tlPoints');
+const tlSlider = document.getElementById('tlSlider');
+const tlYear = document.getElementById('tlYear');
+const tlEvent = document.getElementById('tlEvent');
+const tlCursor = document.getElementById('tlCursor');
+
+const tlW = 360, tlX0 = 20;
+function tlY(v) {
+  const min = 5.5, max = 8.5;
+  return 80 - ((v - min) / (max - min)) * 60;
+}
+
+let prev = null;
+tlData.forEach((d, i) => {
+  const x = tlX0 + (tlW / (tlData.length - 1)) * i;
+  const y = tlY(d.val);
+  if (prev) {
+    const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    ln.setAttribute('x1', prev.x); ln.setAttribute('y1', prev.y);
+    ln.setAttribute('x2', x); ln.setAttribute('y2', y);
+    ln.setAttribute('stroke', 'var(--red)');
+    ln.setAttribute('stroke-width', '1.4');
+    ln.setAttribute('opacity', '0.4');
+    tlPoints.appendChild(ln);
+  }
+  prev = { x, y };
+});
+tlData.forEach((d, i) => {
+  const x = tlX0 + (tlW / (tlData.length - 1)) * i;
+  const y = tlY(d.val);
+  const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 4);
+  c.setAttribute('fill', 'var(--red)');
+  c.setAttribute('opacity', '0.4');
+  c.setAttribute('data-i', i);
+  tlPoints.appendChild(c);
+
+  const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  t.setAttribute('x', x); t.setAttribute('y', 100);
+  t.setAttribute('text-anchor', 'middle');
+  t.setAttribute('font-family', 'JetBrains Mono, monospace');
+  t.setAttribute('font-size', '9');
+  t.setAttribute('fill', 'var(--ink-faint)');
+  t.textContent = d.year;
+  tlPoints.appendChild(t);
+});
+
+function updateTl(i) {
+  const d = tlData[i];
+  tlYear.textContent = d.year;
+  tlEvent.innerHTML = d.desc;
+  const x = tlX0 + (tlW / (tlData.length - 1)) * i;
+  tlCursor.setAttribute('x1', x);
+  tlCursor.setAttribute('x2', x);
+  tlPoints.querySelectorAll('circle').forEach(c => {
+    const ci = +c.getAttribute('data-i');
+    c.setAttribute('r', ci === i ? 6 : 4);
+    c.setAttribute('opacity', ci === i ? '1' : '0.4');
+  });
+}
+tlSlider.addEventListener('input', e => updateTl(+e.target.value));
+updateTl(0);
+
+/* ============================================================
+   DIMENSIONS
+   ============================================================ */
+const dimCount = document.getElementById('dimCount');
+const dimToggles = document.querySelectorAll('.dim-toggle');
+let dimTotal = 0;
+let dimDisp = 0;
+let dimRaf = null;
+
+function animDim(target) {
+  cancelAnimationFrame(dimRaf);
+  const start = dimDisp;
+  const dur = 500;
+  const t0 = performance.now();
+  function step(t) {
+    const p = Math.min(1, (t - t0) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    dimDisp = Math.round(start + (target - start) * eased);
+    dimCount.textContent = dimDisp.toLocaleString();
+    if (p < 1) dimRaf = requestAnimationFrame(step);
+  }
+  dimRaf = requestAnimationFrame(step);
+}
+dimToggles.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const v = +btn.dataset.val;
+    if (btn.classList.toggle('on')) dimTotal += v;
+    else dimTotal -= v;
+    animDim(dimTotal);
+  });
+});
+
+/* ============================================================
+   HETEROGENEITY — tap to reveal detail
+   ============================================================ */
+const hetDetail = document.getElementById('hetDetail');
+document.querySelectorAll('.het-src').forEach(src => {
+  src.addEventListener('click', () => {
+    document.querySelectorAll('.het-src').forEach(s => s.classList.remove('active'));
+    src.classList.add('active');
+    hetDetail.innerHTML = src.dataset.detail;
+    hetDetail.classList.add('show');
+  });
+});
+
+/* ============================================================
+   VAULT
+   ============================================================ */
+document.querySelectorAll('.vault-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const risk = item.querySelector('.vault-risk');
+    if (item.classList.toggle('unlocked')) {
+      risk.textContent = item.dataset.risk;
+    } else {
+      risk.textContent = 'Tap to reveal risk';
+    }
+  });
+});
+
+/* ============================================================
+   CHART CODE DECODER
+   ============================================================ */
+const codeDB = {
+  'E11.9': { sys: 'ICD-10', name: 'Type 2 diabetes mellitus', explain: 'A diagnosis code. E = endocrine/metabolic. 11.9 = T2DM with no complications. Used worldwide for billing, reporting, and research.' },
+  'I10': { sys: 'ICD-10', name: 'Essential hypertension', explain: 'A diagnosis code. I = circulatory system. Anjali has hypertension alongside diabetes — common combination.' },
+  '99213': { sys: 'CPT', name: 'Office visit, 20–29 min', explain: 'A procedure code. Billed for established-patient office visits of moderate complexity — the most common code in outpatient clinics.' },
+  '4548-4': { sys: 'LOINC', name: 'Hemoglobin A1c', explain: 'A lab test code. Reflects Anjali\'s 3-month average glucose. Reported the same way in every lab on Earth.' },
+  '2345-7': { sys: 'LOINC', name: 'Glucose in serum', explain: 'A lab test code. Encodes six things: what (glucose), property, timing, system (serum), scale, method. The -7 is a check digit.' },
+  '84229001': { sys: 'SNOMED CT', name: 'Fatigue (finding)', explain: 'A clinical concept. SNOMED links "fatigue," "tiredness," "exhaustion" — all under one ID. Makes free-text notes computable.' }
+};
+
+const chartDecoded = document.getElementById('chartDecoded');
+const decSys = document.getElementById('decSys');
+const decCode = document.getElementById('decCode');
+const decName = document.getElementById('decName');
+const decExplain = document.getElementById('decExplain');
+
+document.querySelectorAll('.chart-code').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const code = btn.dataset.code;
+    const f = codeDB[code];
+    if (!f) return;
+    document.querySelectorAll('.chart-code').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    decSys.textContent = f.sys;
+    decCode.textContent = code;
+    decName.textContent = f.name;
+    decExplain.textContent = f.explain;
+    chartDecoded.classList.add('show');
+    // smooth scroll the decoded result into view
+    setTimeout(() => {
+      chartDecoded.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  });
+});
+
+/* ============================================================
+   QUIZ — about Anjali
+   ============================================================ */
+const qData = [
+  {
+    q: "Anjali's wearable streams her glucose readings as JSON. That format is:",
+    options: ["Structured", "Unstructured", "Semi-structured", "Binary"],
+    correct: 2,
+    explain: "JSON has self-describing keys and flexible structure — that's semi-structured. Sits between rigid tables and free-text notes. Modern APIs, FHIR, and wearables all use it."
+  },
+  {
+    q: "Anjali's doctor's note says 'patient stopped exercising.' What kind of data is that?",
+    options: ["Structured — it's a behavioral field", "Unstructured — it's free-text human language", "Semi-structured — it's tagged", "Genetic data"],
+    correct: 1,
+    explain: "Free-text notes have no fixed schema. About 70–80% of healthcare data lives here — and the most clinically meaningful context (lifestyle, symptoms, social factors) usually does too."
+  },
+  {
+    q: "Why couldn't the Delhi specialist see Anjali's Bangalore records?",
+    options: [
+      "Her records didn't exist",
+      "Her records existed but the systems used different formats and codes",
+      "She forgot to share permission",
+      "Her records were deleted"
+    ],
+    correct: 1,
+    explain: "This is the language-failure point. The data existed — but without shared standards (HL7, FHIR, LOINC, ICD), it couldn't travel between systems. The patient pays the price."
+  },
+  {
+    q: "Anjali's diagnosis 'Type 2 diabetes' is recorded as E11.9. Which standard is that?",
+    options: ["LOINC", "CPT", "ICD", "SNOMED CT"],
+    correct: 2,
+    explain: "ICD answers 'what's wrong.' Anjali's E11.9 is her diabetes diagnosis. LOINC = what was measured (her HbA1c). CPT = what was done (her office visit). SNOMED CT = the broader clinical vocabulary."
+  },
+  {
+    q: "Her HbA1c result is coded as LOINC 4548-4. What does that achieve?",
+    options: [
+      "It tells the insurance company how much to pay",
+      "It guarantees the same test result means the same thing in any hospital, in any country",
+      "It's a billing code",
+      "It identifies the doctor"
+    ],
+    correct: 1,
+    explain: "That's the whole point of LOINC. Same test, same code, same meaning — anywhere on Earth. Without it, Anjali's lab values would be just numbers without standardized meaning."
+  }
+];
+
+let qIdx = 0, qScore = 0, qAns = false;
+const qNum = document.getElementById('qNum');
+const qQ = document.getElementById('qQ');
+const qOpts = document.getElementById('qOpts');
+const qFb = document.getElementById('qFb');
+const qNext = document.getElementById('qNext');
+const qActive = document.getElementById('qActive');
+const qResults = document.getElementById('qResults');
+const qScoreNum = document.getElementById('qScoreNum');
+const qMsg = document.getElementById('qMsg');
+const qRestart = document.getElementById('qRestart');
+const qProgress = document.getElementById('qProgress');
+
+function renderQ() {
+  const q = qData[qIdx];
+  qAns = false;
+  qNum.textContent = `Question ${qIdx + 1} of ${qData.length}`;
+  qQ.textContent = q.q;
+  qOpts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'quiz-opt';
+    b.innerHTML = `<span class="opt-letter">${String.fromCharCode(65 + i)}</span><span>${opt}</span>`;
+    b.addEventListener('click', () => answer(i, b));
+    qOpts.appendChild(b);
+  });
+  qFb.classList.remove('show', 'correct', 'incorrect');
+  qFb.innerHTML = '';
+  qNext.classList.remove('show');
+  qNext.innerHTML = qIdx === qData.length - 1 ? 'See your score <span>→</span>' : 'Next <span>→</span>';
+  qProgress.style.width = `${(qIdx / qData.length) * 100}%`;
+}
+
+function answer(i, btn) {
+  if (qAns) return;
+  qAns = true;
+  const q = qData[qIdx];
+  qOpts.querySelectorAll('.quiz-opt').forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.correct) b.classList.add('correct');
+    if (idx === i && i !== q.correct) b.classList.add('incorrect');
+  });
+  if (i === q.correct) {
+    qScore++;
+    qFb.classList.add('show', 'correct');
+    qFb.innerHTML = `<strong>Right.</strong>${q.explain}`;
+  } else {
+    qFb.classList.add('show', 'incorrect');
+    qFb.innerHTML = `<strong>Not quite.</strong>${q.explain}`;
+  }
+  qNext.classList.add('show');
+}
+
+qNext.addEventListener('click', () => {
+  qIdx++;
+  if (qIdx >= qData.length) showResults();
+  else renderQ();
+});
+
+function showResults() {
+  qActive.style.display = 'none';
+  qResults.classList.add('show');
+  qScoreNum.textContent = qScore;
+  qProgress.style.width = '100%';
+  let m;
+  if (qScore === 5) m = "Flawless. Anjali would be proud.";
+  else if (qScore >= 4) m = "Strong grasp — you've got the core ideas.";
+  else if (qScore >= 2) m = "A solid start. Scroll back and try once more.";
+  else m = "That's okay — this stuff is dense. Run through it again.";
+  qMsg.textContent = m;
+}
+
+qRestart.addEventListener('click', () => {
+  qIdx = 0; qScore = 0;
+  qResults.classList.remove('show');
+  qActive.style.display = 'block';
+  renderQ();
+});
+renderQ();
+</script>
+</body>
+</html>
